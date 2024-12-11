@@ -18,7 +18,10 @@ const phoneticSounds = {
 
 let isPlaying = false; // Variable to track if sounds are being played
 
-// Function to play a sound
+/**
+ * Function to play a sound
+ * @param {string} filePath - Path to the sound file
+ */
 function playSound(filePath) {
     console.log(`DEBUG: Attempting to play sound from: ${filePath}`);
     const audio = new Audio(filePath);
@@ -30,14 +33,19 @@ function playSound(filePath) {
     });
 }
 
-// Function to prompt user for their name and welcome them
+/**
+ * Function to prompt user for their name and welcome them
+ */
 function getUserName() {
     const name = prompt("Please enter your name:");
     console.log(`DEBUG: User entered name: ${name}`);
     if (name) welcomeUser(name);
 }
 
-// Function to display a welcome message, play it using speech synthesis, and hide the start button
+/**
+ * Function to display a welcome message, play it using speech synthesis, and hide the start button
+ * @param {string} name - User's name
+ */
 function welcomeUser(name) {
     const welcomeLabel = document.createElement('h2');
     welcomeLabel.textContent = `Welcome, ${name}! Enjoy your interactive phonetic chart.`;
@@ -62,10 +70,18 @@ function welcomeUser(name) {
     const startButton = document.getElementById('start-button');
     if (startButton) {
         startButton.style.display = 'none';
+        console.log('DEBUG: Start button hidden');
+    } else {
+        console.error('ERROR: Start button not found.');
     }
 }
 
-// Function to create a button for each phonetic sound
+/**
+ * Function to create a button for each phonetic sound
+ * @param {string} symbol - Phonetic symbol
+ * @param {string} soundFile - Path to the sound file
+ * @param {HTMLElement} container - Container element to append the button
+ */
 function createButton(symbol, soundFile, container) {
     const button = document.createElement('div');
     button.className = 'chart-button';
@@ -75,7 +91,11 @@ function createButton(symbol, soundFile, container) {
     container.appendChild(button);
 }
 
-// Function to handle button click events
+/**
+ * Function to handle button click events
+ * @param {HTMLElement} button - Button element
+ * @param {string} soundFile - Path to the sound file
+ */
 function handleButtonClick(button, soundFile) {
     playSound(soundFile);
     button.classList.add('highlighted');
@@ -86,20 +106,26 @@ function handleButtonClick(button, soundFile) {
     document.getElementById('follow-along').appendChild(clone);
 }
 
-// Function to clear the Follow Along Chart
+/**
+ * Function to clear the Follow Along Chart
+ */
 function clearFollowAlong() {
     document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
     console.log('DEBUG: Follow Along Chart cleared');
 }
 
-// Function to clear highlighted buttons
+/**
+ * Function to clear highlighted buttons
+ */
 function clearHighlights() {
     const highlightedButtons = document.querySelectorAll('.chart-button.highlighted');
     highlightedButtons.forEach(button => button.classList.remove('highlighted'));
     console.log('DEBUG: Highlights cleared');
 }
 
-// Function to play selected sounds in the Follow Along Chart with a delay
+/**
+ * Function to play selected sounds in the Follow Along Chart with a delay
+ */
 async function playSelectedSounds() {
     if (isPlaying) return;
     console.log('DEBUG: Playing selected sounds');
@@ -119,7 +145,9 @@ async function playSelectedSounds() {
     console.log('DEBUG: Finished playing selected sounds');
 }
 
-// Initialization function
+/**
+ * Initialization function to set up event listeners and create phonetic buttons
+ */
 function init() {
     console.log('DEBUG: Initialization started');
     const startButton = document.getElementById('start-button');
