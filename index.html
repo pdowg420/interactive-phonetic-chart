@@ -113,35 +113,45 @@
 
         // Function to display a welcome message, play it using speech synthesis, and hide the start button
         function welcomeUser(name) {
-            const welcomeLabel = document.createElement('h2');
-            welcomeLabel.textContent = `Welcome, ${name}! Enjoy your interactive phonetic chart.`;
-            document.body.prepend(welcomeLabel);
-            console.log(`DEBUG: Welcome message displayed for: ${name}`);
+    const welcomeLabel = document.createElement('h2');
+    welcomeLabel.textContent = `Welcome, ${name}! Enjoy your interactive phonetic chart.`;
+    document.body.prepend(welcomeLabel);
+    console.log(`DEBUG: Welcome message displayed for: ${name}`);
 
-            const welcomeMessage = `Welcome, ${name}! Enjoy your interactive phonetic chart.`;
-            const utterance = new SpeechSynthesisUtterance(welcomeMessage);
-            utterance.pitch = 1.2; // Adjust pitch for a more natural sound
-            utterance.rate = 1; // Normal speaking rate
+    const welcomeMessage = `Welcome, ${name}! Enjoy your interactive phonetic chart.`;
+    const utterance = new SpeechSynthesisUtterance(welcomeMessage);
+    utterance.pitch = 1.2; // Adjust pitch for a more natural sound
+    utterance.rate = 1; // Normal speaking rate
 
-            // Ensure voices are loaded before speaking
-            const ensureVoicesLoaded = setInterval(() => {
-                if (speechSynthesis.getVoices().length > 0) {
-                    clearInterval(ensureVoicesLoaded);
-                    console.log('DEBUG: Voices loaded:', speechSynthesis.getVoices());
-                    speechSynthesis.speak(utterance);
-                }
-            }, 100);
-
-            // Hide the start button after displaying the welcome message
-            const startButton = document.getElementById('start-button');
-            if (startButton) {
-                startButton.style.display = 'none';
-                console.log('DEBUG: Start button hidden');
-            } else {
-                console.error('ERROR: Start button not found.');
-            }
+    function speakMessage() {
+        const voices = window.speechSynthesis.getVoices();
+        console.log('DEBUG: Voices loaded:', voices);
+        // Try to find an English voice
+        const preferredVoice = voices.find(voice => voice.lang.includes('en')) || voices[0];
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+            console.log(`DEBUG: Selected voice: ${preferredVoice.name}`);
+        } else {
+            console.error('ERROR: No suitable voice found.');
         }
+        window.speechSynthesis.speak(utterance);
+    }
 
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = speakMessage;
+    } else {
+        speakMessage();
+    }
+
+    // Hide the start button after displaying the welcome message
+    const startButton = document.getElementById('start-button');
+    if (startButton) {
+        startButton.style.display = 'none';
+        console.log('DEBUG: Start button hidden');
+    } else {
+        console.error('ERROR: Start button not found.');
+    }
+}
         // Function to create a button for each phonetic sound
         function createButton(symbol, soundFile, container) {
             const button = document.createElement('div');
