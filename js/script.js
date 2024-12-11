@@ -37,7 +37,7 @@ function getUserName() {
     if (name) welcomeUser(name);
 }
 
-// Function to display a welcome message and play it using speech synthesis
+// Function to display a welcome message, play it using speech synthesis, and hide the start button
 function welcomeUser(name) {
     const welcomeLabel = document.createElement('h2');
     welcomeLabel.textContent = `Welcome, ${name}! Enjoy your interactive phonetic chart.`;
@@ -57,6 +57,12 @@ function welcomeUser(name) {
             speechSynthesis.speak(utterance);
         }
     }, 100);
+
+    // Hide the start button after displaying the welcome message
+    const startButton = document.getElementById('start-button');
+    if (startButton) {
+        startButton.style.display = 'none';
+    }
 }
 
 // Function to create a button for each phonetic sound
