@@ -1,0 +1,32 @@
+/* Basic styling for the chart buttons and highlights */
+.chart-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    background-color: lightgray;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.highlighted {
+    background-color: yellow;
+}
+
+#follow-along {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.play-button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.play-button:hover {
+    background-color: #45a049;
+}
