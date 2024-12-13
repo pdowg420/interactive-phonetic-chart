@@ -100,21 +100,26 @@ async function playSelectedSounds() {
 
 // Initialize the app
 function init() {
+    console.log('DEBUG: Initialization started');
     const startButton = document.getElementById('start-button');
     if (startButton) {
         startButton.addEventListener('click', () => {
             getUserName();
             const vowelSoundsDiv = document.getElementById('vowel-sounds');
-            Object.entries(phoneticSounds.vowels).forEach(([symbol, soundFile]) => {
+            for (const [symbol, soundFile] of Object.entries(phoneticSounds.vowels)) {
+                console.log(`DEBUG: Creating button for symbol: /${symbol}/`);
                 createButton(symbol, soundFile, vowelSoundsDiv);
-            });
-
+            }
             const consonantSoundsDiv = document.getElementById('consonant-sounds');
-            Object.entries(phoneticSounds.consonants).forEach(([symbol, soundFile]) => {
+            for (const [symbol, soundFile] of Object.entries(phoneticSounds.consonants)) {
                 createButton(symbol, soundFile, consonantSoundsDiv);
-            });
+            }
+            console.log('DEBUG: Buttons created for vowels and consonants');
         });
+    } else {
+        console.error('ERROR: Start button not found.');
     }
 }
+
 
 window.onload = init;
