@@ -6,7 +6,8 @@ const phoneticSounds = {
         "i": "sounds/sound_i.mp3",
         "o": "sounds/sound_o.mp3",
         "u": "sounds/sound_u.mp3",
-        "au": "sounds/sound_au.mp3"  // Adding the new 'au' sound
+        "ai": "sounds/sound_ai.mp3", // Including 'ai' sound
+        "au": "sounds/sound_au.mp3" // Adding the new 'au' sound
     },
     consonants: {
         "b": "sounds/sound_b.mp3",
