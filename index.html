@@ -80,8 +80,9 @@
                 "i": "sounds/sound_i.mp3",
                 "o": "sounds/sound_o.mp3",
                 "u": "sounds/sound_u.mp3",
-                "au": "sounds/sound_au.mp3"  // Adding the new 'au' sound
-            },phoneticSounds.vowels["ai"] = "sounds/sound_ai.mp3";  // New vowel sound
+                "ai": "sounds/sound_ai.mp3",  // Correct new vowel sound 'ai'
+                "au": "sounds/sound_au.mp3"  // Correct 'au' sound
+            },
             consonants: {
                 "b": "sounds/sound_b.mp3",
                 "d": "sounds/sound_d.mp3",
@@ -209,8 +210,7 @@
         }
 
         // Initialization function
-        function init() {
-            console.log('DEBUG: Initialization started');
+        window.onload = function() {
             const startButton = document.getElementById('start-button');
             if (startButton) {
                 startButton.addEventListener('click', () => {
@@ -228,9 +228,7 @@
             } else {
                 console.error('ERROR: Start button not found.');
             }
-        }
-
-        window.onload = init;
+        };
     </script>
 </body>
 </html>
