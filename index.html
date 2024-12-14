@@ -69,7 +69,9 @@
                 "ai": "sounds/sound_ai.mp3",
                 "au": "sounds/sound_au.mp3",
                 "ae": "sounds/sound_ae.mp3",
-                "ə" : "sounds/sound_ə.mp3"
+                "ə" : "sounds/sound_ə.mp3",
+                "I" : "sounds/sound_I.mp3",
+                "ɔ": "sounds/sound_ɔ.mp3"
             },
             consonants: {
                 "b": "sounds/sound_b.mp3",
@@ -153,84 +155,14 @@
             container.appendChild(button);
         }
 
-        // Function to handle button click events
-        function handleButtonClick(button, soundFile) {
-            playSound(soundFile);
-            button.classList.add('highlighted');
-            console.log(`DEBUG: Button clicked, symbol: /${button.textContent}/, playing sound: ${soundFile}`);
-            const clone = button.cloneNode(true);
-            clone.dataset.soundFile = soundFile;
-            clone.classList.remove('highlighted');
-            document.getElementById('follow-along').appendChild(clone);
-        }
+       // Function to handle button click events
+function handleButtonClick(button, soundFile) {
+    playSound(soundFile);
+    button.classList.add('highlighted');
+    console.log(`DEBUG: Button clicked, symbol: /${button.textContent}/, playing sound: ${soundFile}`);
+    const clone = button.cloneNode(true);
+    clone.dataset.soundFile = soundFile;
+    clone.classList.remove('highlighted');
+    document.getElementById('follow-along').appendChild(clone);
+}
 
-        // Function to clear the Follow Along Chart
-        function clearFollowAlong() {
-            document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
-            console.log('DEBUG: Follow Along Chart cleared');
-        }
-
-        // Function to clear highlighted buttons
-        function clearHighlights() {
-            const highlightedButtons = document.querySelectorAll('.chart-button.highlighted');
-            highlightedButtons.forEach(button => button.classList.remove('highlighted'));
-            console.log('DEBUG: Highlights cleared');
-        }
-
-        // Function to play selected sounds in the Follow Along Chart with a delay
-        async function playSelectedSounds() {
-            if (isPlaying) return;
-            console.log('DEBUG: Playing selected sounds');
-
-            const followAlongDiv = document.getElementById('follow-along');
-            const buttons = followAlongDiv.querySelectorAll('div.chart-button');
-            isPlaying = true;
-
-            for (const button of buttons) {
-                const soundFile = button.dataset.soundFile;
-                await playSound(soundFile);
-                console.log(`DEBUG: Playing sound file: ${soundFile}`);
-                await new Promise(resolve => setTimeout(resolve, 500)); // Add delay between sounds
-            }
-
-            isPlaying = false;
-            console.log('DEBUG: Finished playing selected sounds');
-        }
-
-        // Initialization function
-        window.onload = function() {
-            const startButton = document.getElementById('start-button');
-            if (startButton) {
-                startButton.addEventListener('click', () => {
-                    getUserName();
-                    const vowelSoundsDiv = document.getElementById('vowel-sounds');
-                    for (const [symbol, soundFile] of Object.entries(phoneticSounds.vowels)) {
-                        createButton(symbol, soundFile, vowelSoundsDiv);
-                    }
-                    const consonantSoundsDiv = document.getElementById('consonant-sounds');
-                    for (const [symbol, soundFile] of Object.entries(phoneticSounds.consonants)) {
-                        createButton(symbol, soundFile, consonantSoundsDiv);
-                    }
-                    console.log('DEBUG: Buttons created for vowels and consonants');
-                });
-            } else {
-                console.error('ERROR: Start button not found.');
-            }
-        };
-    </script>
-</head>
-<body>
-    <h1>Interactive Phonetic Chart</h1>
-    <button id="start-button">Start</button> <!-- Ensure the start button is here with the correct id -->
-    <div id="vowel-sounds"></div>
-    <div id="consonant-sounds"></div>
-    <div id="follow-along">
-        <h2>Follow Along Chart</h2>
-        <button class="play-button" onclick="playSelectedSounds()">Play Selected Sounds</button>
-    </div>
-    <div id="controls">
-        <button onclick="clearFollowAlong()">Clear Follow Along Chart</button>
-        <button onclick="clearHighlights()">Clear Highlights</button>
-    </div>
-</body>
-</html>
