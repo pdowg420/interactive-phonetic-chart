@@ -20,8 +20,8 @@
 }
 
 .play-button {
-    font-size: 4px !important; /* adjust the font size*/
-    padding:2.5px 5px; /* adjust the padding*/
+    font-size: 4px !important; /* adjust the font size */
+    padding: 2.5px 5px; /* adjust the padding */
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -30,4 +30,11 @@
 
 .play-button:hover {
     background-color: #45a049;
+}
+
+/* Small button styling */
+.small-button {
+    font-size: 10px; /* Adjust as needed */
+    padding: 5px 10px; /* Adjust as needed */
+    border-radius: 5px;
 }
