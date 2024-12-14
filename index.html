@@ -15,9 +15,8 @@
         }
         .chart-button {
             display: inline-block;
-            margin: 5px; /* Match script margin */
-            padding: 15px; /* Match script padding */
-            background-color: lightgray;
+            margin: 5px;
+            padding: 15px; /* Increased padding for bigger buttons */
             border: 1px solid #ccc;
             border-radius: 4px;
             cursor: pointer;
@@ -26,7 +25,7 @@
             background-color: #f0f0f0;
         }
         .highlighted {
-            background-color: yellow; /* Match script */
+            background-color: yellow;
         }
         #vowel-sounds, #consonant-sounds, #follow-along {
             display: flex;
@@ -38,7 +37,7 @@
             margin: 20px 0;
         }
         .play-button {
-            font-size: 10px;
+            font-size: 20px;
             padding: 10px;
             cursor: pointer;
             background-color: #4CAF50;
@@ -50,59 +49,68 @@
         .play-button:hover {
             background-color: #45a049;
         }
-        .small-button {
-            font-size: 16px; /* Adjust as needed */
-            padding: 5px 10px; /* Adjust as needed */
-            border-radius: 4px; /* Adjust as needed */
+        .tooltip {
+            position: absolute;
+            background-color: yellow;
+            border: 1px solid black;
+            padding: 5px;
+            z-index: 1000;
         }
     </style>
+</head>
+<body>
+    <h1>Interactive Phonetic Chart</h1>
+    <div id="vowel-sounds"></div>
+    <div id="consonant-sounds"></div>
+    <div id="follow-along">
+        <h2>Follow Along Chart</h2>
+        <button class="play-button" onclick="playSelectedSounds()">Play Selected Sounds</button>
+    </div>
+    <div id="controls">
+        <button onclick="clearFollowAlong()">Clear Follow Along Chart</button>
+        <button onclick="clearHighlights()">Clear Highlights</button>
+    </div>
+
     <script>
-        // Object holding paths to phonetic sound files
         const phoneticSounds = {
             vowels: {
-                "a": "sounds/sound_a.mp3",
-                "e": "sounds/sound_e.mp3",
-                "i": "sounds/sound_i.mp3",
-                "o": "sounds/sound_o.mp3",
-                "u": "sounds/sound_u.mp3",
-                "ai": "sounds/sound_ai.mp3",
-                "au": "sounds/sound_au.mp3",
-                "ae": "sounds/sound_ae.mp3",
-                "ə" : "sounds/sound_ə.mp3",
-                "I" : "sounds/sound_I.mp3",
-                "ɔ": "sounds/sound_ɔ.mp3"
+                "a": "Sounds/sound_a.mp3",
+                "e": "Sounds/sound_e.mp3",
+                "i": "Sounds/sound_i.mp3",
+                "o": "Sounds/sound_o.mp3",
+                "u": "Sounds/sound_u.mp3",
+                "aɪ": "Sounds/sound_ai.mp3"
             },
             consonants: {
-                "b": "sounds/sound_b.mp3",
-                "d": "sounds/sound_d.mp3",
-                "f": "sounds/sound_f.mp3",
-                "g": "sounds/sound_g.mp3",
-                "h": "sounds/sound_h.mp3"
+                "b": "Sounds/sound_b.mp3",
+                "d": "Sounds/sound_d.mp3",
+                "f": "Sounds/sound_f.mp3",
+                "g": "Sounds/sound_g.mp3",
+                "h": "Sounds/sound_h.mp3"
             }
         };
 
-        let isPlaying = false; // Variable to track if sounds are being played
+        let isPlaying = false; // Variable to check if sounds are being played
 
-        // Function to play a sound
         function playSound(filePath) {
             console.log(`DEBUG: Attempting to play sound from: ${filePath}`);
             const audio = new Audio(filePath);
             return audio.play().then(() => {
                 console.log(`DEBUG: Successfully playing sound from: ${filePath}`);
-            }).catch((error) => {
+            }).catch(error => {
                 console.error(`ERROR: Failed to play sound ${filePath}: ${error}`);
                 alert(`Failed to play sound from ${filePath}. Please check if the file exists.`);
             });
         }
 
-        // Function to prompt user for their name and welcome them
         function getUserName() {
             const name = prompt("Please enter your name:");
             console.log(`DEBUG: User entered name: ${name}`);
-            if (name) welcomeUser(name);
+            if (name) {
+                welcomeUser(name);
+            }
         }
 
-        // Function to display a welcome message, play it using speech synthesis, and hide the start button
         function welcomeUser(name) {
             const welcomeLabel = document.createElement('h2');
             welcomeLabel.textContent = `Welcome, ${name}! Enjoy your interactive phonetic chart.`;
@@ -114,122 +122,124 @@
             utterance.pitch = 1.2; // Adjust pitch for a more natural sound
             utterance.rate = 1; // Normal speaking rate
 
-            function speakMessage() {
-                const voices = window.speechSynthesis.getVoices();
-                console.log('DEBUG: Voices loaded:', voices);
-                // Try to find an English voice
-                const preferredVoice = voices.find(voice => voice.lang.includes('en')) || voices[0];
-                if (preferredVoice) {
-                    utterance.voice = preferredVoice;
-                    console.log(`DEBUG: Selected voice: ${preferredVoice.name}`);
-                } else {
-                    console.error('ERROR: No suitable voice found.');
+            let voicesLoaded = false;
+
+            function setVoice() {
+                if (!voicesLoaded) {
+                    const voices = window.speechSynthesis.getVoices();
+                    console.log('DEBUG: Voices loaded:', voices);
+                    const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.lang.includes('en-US'));
+                    if (femaleVoice) {
+                        utterance.voice = femaleVoice;
+                        console.log(`DEBUG: Selected voice: ${femaleVoice.name}`);
+                    } else {
+                        console.error('ERROR: No suitable female voice found.');
+                    }
+                    voicesLoaded = true; // Ensure voices are only loaded once
                 }
                 window.speechSynthesis.speak(utterance);
             }
 
+            // Ensure voices are loaded and set only once
             if (window.speechSynthesis.onvoiceschanged !== undefined) {
-                window.speechSynthesis.onvoiceschanged = speakMessage;
+                window.speechSynthesis.onvoiceschanged = setVoice;
             } else {
-                speakMessage();
-            }
-
-            // Hide the start button after displaying the welcome message
-            const startButton = document.getElementById('start-button');
-            if (startButton) {
-                startButton.style.display = 'none';
-                console.log('DEBUG: Start button hidden');
-            } else {
-                console.error('ERROR: Start button not found.');
+                setVoice();
             }
         }
 
-        // Function to create a button for each phonetic sound
         function createButton(symbol, soundFile, container) {
             const button = document.createElement('div');
             button.className = 'chart-button';
-            button.textContent = `/${symbol}/`;
+            button.innerHTML = `<img src='Sounds/sound-icon.png' alt='Play Sound' style='width:20px;height:20px;' /> /${symbol}/`; // Added sound icon
             button.onclick = () => handleButtonClick(button, soundFile);
-            console.log(`DEBUG: Button created for symbol: /${symbol}/ with sound file: ${soundFile}`);
+            button.onmouseover = () => showTooltip(button, `Play sound: /${symbol}/`);
+            button.onmouseout = () => hideTooltip(button);
             container.appendChild(button);
+            console.log(`DEBUG: Added button for /${symbol}/ with sound file ${soundFile}`);
         }
 
-        // Function to handle button click events
         function handleButtonClick(button, soundFile) {
             playSound(soundFile);
             button.classList.add('highlighted');
-            console.log(`DEBUG: Button clicked, symbol: /${button.textContent}/, playing sound: ${soundFile}`);
             const clone = button.cloneNode(true);
-            clone.dataset.soundFile = soundFile;
+            clone.dataset.soundFile = soundFile; // Store the sound file path in the cloned button
             clone.classList.remove('highlighted');
             document.getElementById('follow-along').appendChild(clone);
         }
 
-        // Function to clear the Follow Along Chart
+        function showTooltip(element, text) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = text;
+            tooltip.style.position = 'absolute';
+            tooltip.style.backgroundColor = 'yellow';
+            tooltip.style.border = '1px solid black';
+            tooltip.style.padding = '5px';
+            tooltip.style.zIndex = '1000';
+            document.body.append(tooltip);
+
+            const rect = element.getBoundingClientRect();
+            tooltip.style.left = `${rect.left + window.scrollX}px`;
+            tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight}px`;
+
+            element.tooltip = tooltip;
+        }
+
+        function hideTooltip(element) {
+            if (element.tooltip) {
+                element.tooltip.remove();
+                element.tooltip = null;
+            }
+        }
+
         function clearFollowAlong() {
-            document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
+            const followAlongDiv = document.getElementById('follow-along');
+            followAlongDiv.innerHTML = '<h2>Follow Along Chart</h2><button class="play-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
             console.log('DEBUG: Follow Along Chart cleared');
         }
 
-        // Function to clear highlighted buttons
         function clearHighlights() {
             const highlightedButtons = document.querySelectorAll('.chart-button.highlighted');
             highlightedButtons.forEach(button => button.classList.remove('highlighted'));
             console.log('DEBUG: Highlights cleared');
         }
 
-        // Function to play selected sounds in the Follow Along Chart with a delay
         async function playSelectedSounds() {
-            if (isPlaying) return;
-            console.log('DEBUG: Playing selected sounds');
+            if (isPlaying) return; // Prevent multiple playbacks at the same time
 
             const followAlongDiv = document.getElementById('follow-along');
             const buttons = followAlongDiv.querySelectorAll('div.chart-button');
-            isPlaying = true;
+            let delay = 500; // Play each sound 0.5 seconds apart
+
+            isPlaying = true; // Set playing flag to true
 
             for (const button of buttons) {
                 const soundFile = button.dataset.soundFile;
+                await new Promise(resolve => setTimeout(resolve, delay));
                 await playSound(soundFile);
-                console.log(`DEBUG: Playing sound file: ${soundFile}`);
-                await new Promise(resolve => setTimeout(resolve, 500)); // Add delay between sounds
             }
 
-            isPlaying = false;
-            console.log('DEBUG: Finished playing selected sounds');
+            isPlaying = false; // Reset playing flag after all sounds are played
+
+            console.log('DEBUG: Playing selected sounds in order');
         }
 
-        // Initialization function
-        window.onload = function() {
-            const startButton = document.getElementById('start-button');
-            if (startButton) {
-                startButton.addEventListener('click', () => {
-                    getUserName();
-                    const vowelSoundsDiv = document.getElementById('vowel-sounds');
-                    if (vowelSoundsDiv) {
-                        for (const [symbol, soundFile] of Object.entries(phoneticSounds.vowels)) {
-                            createButton(symbol, soundFile, vowelSoundsDiv);
-                        }
-                    } else {
-                        console.error('ERROR: Vowel sounds div not found.');
-                    }
+        function init() {
+            getUserName(); // Prompt for the user's name and trigger the welcome message
 
-                    const consonantSoundsDiv = document.getElementById('consonant-sounds');
-                    if (consonantSoundsDiv) {
-                        for (const [symbol, soundFile] of Object.entries(phoneticSounds.consonants)) {
-                            createButton(symbol, soundFile, consonantSoundsDiv);
-                        }
-                    } else {
-                        console.error('ERROR: Consonant sounds div not found.');
-                    }
-
-                    console.log('DEBUG: Buttons created for vowels and consonants');
-                });
-            } else {
-                console.error('ERROR: Start button not found.');
+            const vowelSoundsDiv = document.getElementById('vowel-sounds');
+            for (const [symbol, soundFile] of Object.entries(phoneticSounds.vowels)) {
+                createButton(symbol, soundFile, vowelSoundsDiv);
             }
-        };
+
+            const consonantSoundsDiv = document.getElementById('consonant-sounds');
+            for (const [symbol, soundFile] of Object.entries(phoneticSounds.consonants)) {
+                createButton(symbol, soundFile, consonantSoundsDiv);
+            }
+        }
+
+        window.onload = init;
     </script>
-</head>
-<body>
-    <h1>Interactive Phonetic Chart</h1>
-    <button id="start-button">Start[_{{{CITATION{{{_1{](https://github.com/Babii-Oleksandr/Babii-Oleksandr_GH8_CMS/tree/ddbc66b94acc5a3d11d5a0cd341998f4768af4d8/home14%2Findex.php)
+</body>
+</html>
