@@ -7,7 +7,9 @@ const phoneticSounds = {
         "o": "sounds/sound_o.mp3",
         "u": "sounds/sound_u.mp3",
         "ai": "sounds/sound_ai.mp3",
-        "au": "sounds/sound_au.mp3"
+        "au": "sounds/sound_au.mp3",
+        "ae": "sounds/sound_ae.mp3",
+        "ə" : "sounds/sound_ə.mp3"
     },
     consonants: {
         "b": "sounds/sound_b.mp3",
