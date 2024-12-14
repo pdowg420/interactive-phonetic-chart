@@ -79,9 +79,11 @@ function clearFollowAlong() {
 }
 
 // Clear highlighted buttons
-function clearHighlights() {
-    document.querySelectorAll('.chart-button.highlighted').forEach(button => button.classList.remove('highlighted'));
+// Clear Follow Along Chart
+function clearFollowAlong() {
+    document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
 }
+
 
 // Play selected sounds with a delay
 async function playSelectedSounds() {
