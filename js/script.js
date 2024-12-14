@@ -74,9 +74,11 @@ function handleButtonClick(button, soundFile) {
 }
 
 // Clear Follow Along Chart
+// Clear Follow Along Chart
 function clearFollowAlong() {
-    document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
+    document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
 }
+
 
 // Clear highlighted buttons
 // Clear Follow Along Chart

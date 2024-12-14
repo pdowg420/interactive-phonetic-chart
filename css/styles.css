@@ -34,7 +34,7 @@
 
 /* Small button styling */
 .small-button {
-    font-size: 10px; /* Adjust as needed */
-    padding: 5px 10px; /* Adjust as needed */
-    border-radius: 5px;
+    font-size: 5px; /* Adjust as needed */
+    padding: 2.5px 5px; /* Adjust as needed */
+    border-radius: 2.5px;
 }
