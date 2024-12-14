@@ -1,27 +1,27 @@
 /* Basic styling for the chart buttons and highlights */
 .chart-button {
     display: inline-block;
-    margin: 10px;
-    padding: 10px;
+    margin: 5px; /* Match script margin */
+    padding: 15px; /* Match script padding */
     background-color: lightgray;
     border: 1px solid #ddd;
     cursor: pointer;
 }
 
 .highlighted {
-    background-color: yellow;
+    background-color: yellow; /* Match script */
 }
 
 #follow-along {
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 20px; /* Match script margin */
+    padding: 10px; /* Match script padding */
     background-color: #f9f9f9;
     border: 1px solid #ddd;
 }
 
 .play-button {
-    font-size: 4px !important; /* adjust the font size */
-    padding: 2.5px 5px; /* adjust the padding */
+    font-size: 20px; /* Match script font size */
+    padding: 10px; /* Match script padding */
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -34,7 +34,7 @@
 
 /* Small button styling */
 .small-button {
-    font-size: 5px; /* Adjust as needed */
-    padding: 2.5px 5px; /* Adjust as needed */
-    border-radius: 2.5px;
+    font-size: 16px; /* Adjust as needed */
+    padding: 5px 10px; /* Adjust as needed */
+    border-radius: 4px; /* Adjust as needed */
 }
