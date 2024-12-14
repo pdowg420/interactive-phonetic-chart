@@ -20,7 +20,7 @@
 }
 
 .play-button {
-    font-size-adjust: 4px; /* adjust the font size*/
+    font-size: 4px !important; /* adjust the font size*/
     padding:2.5px 5px; /* adjust the padding*/
     background-color: #4CAF50;
     color: white;
