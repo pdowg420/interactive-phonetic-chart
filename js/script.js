@@ -1,4 +1,3 @@
-// Object holding paths to phonetic sound files
 const phoneticSounds = {
     vowels: {
         "a": "sounds/sound_a.mp3",
@@ -9,8 +8,8 @@ const phoneticSounds = {
         "ai": "sounds/sound_ai.mp3",
         "au": "sounds/sound_au.mp3",
         "ae": "sounds/sound_ae.mp3",
-        "ə" : "sounds/sound_ə.mp3",
-        "I" : "sounds/sound_I.mp3",
+        "ə": "sounds/sound_ə.mp3",
+        "I": "sounds/sound_I.mp3",
         "ɔ": "sounds/sound_ɔ.mp3",
     },
     consonants: {
@@ -78,18 +77,9 @@ function handleButtonClick(button, soundFile) {
 }
 
 // Clear Follow Along Chart
-// Clear Follow Along Chart
 function clearFollowAlong() {
     document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
 }
-
-
-// Clear highlighted buttons
-// Clear Follow Along Chart
-function clearFollowAlong() {
-    document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
-}
-
 
 // Play selected sounds with a delay
 async function playSelectedSounds() {
@@ -128,6 +118,5 @@ function init() {
         console.error('ERROR: Start button not found.');
     }
 }
-
 
 window.onload = init;
