@@ -78,7 +78,12 @@ function handleButtonClick(button, soundFile) {
 
 // Clear Follow Along Chart
 function clearFollowAlong() {
-    document.getElementById('follow-along').innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
+    const followAlongDiv = document.getElementById('follow-along');
+    if (followAlongDiv) {
+        followAlongDiv.innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
+    } else {
+        console.error("ERROR: Follow-along div not found.");
+    }
 }
 
 // Play selected sounds with a delay
@@ -103,16 +108,25 @@ function init() {
     if (startButton) {
         startButton.addEventListener('click', () => {
             getUserName();
-            const vowelSoundsDiv = document.getElementById('vowel-sounds');
-            for (const [symbol, soundFile] of Object.entries(phoneticSounds.vowels)) {
-                console.log(`DEBUG: Creating button for symbol: /${symbol}/`);
-                createButton(symbol, soundFile, vowelSoundsDiv);
+            const vowelSoundsDiv = document.querySelector('#vowel-sounds .chart-container');
+            const consonantSoundsDiv = document.querySelector('#consonant-sounds .chart-container');
+
+            if (vowelSoundsDiv) {
+                for (const [symbol, soundFile] of Object.entries(phoneticSounds.vowels)) {
+                    console.log(`DEBUG: Creating button for symbol: /${symbol}/`);
+                    createButton(symbol, soundFile, vowelSoundsDiv);
+                }
+            } else {
+                console.error("ERROR: Vowel sounds container not found.");
             }
-            const consonantSoundsDiv = document.getElementById('consonant-sounds');
-            for (const [symbol, soundFile] of Object.entries(phoneticSounds.consonants)) {
-                createButton(symbol, soundFile, consonantSoundsDiv);
+
+            if (consonantSoundsDiv) {
+                for (const [symbol, soundFile] of Object.entries(phoneticSounds.consonants)) {
+                    createButton(symbol, soundFile, consonantSoundsDiv);
+                }
+            } else {
+                console.error("ERROR: Consonant sounds container not found.");
             }
-            console.log('DEBUG: Buttons created for vowels and consonants');
         });
     } else {
         console.error('ERROR: Start button not found.');
