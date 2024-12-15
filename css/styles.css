@@ -19,8 +19,9 @@ h2 {
     cursor: pointer;
 }
 
-.highlighted {
-    background-color: yellow; /* Match script */
+/* Add your highlighting style here */
+.chart-button.highlighted {
+    background-color: yellow; /* or any color you prefer */
 }
 
 #follow-along {
