@@ -77,9 +77,10 @@
     <div id="follow-along">
         <h2>Follow Along Chart</h2>
         <button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>
-        <button class="small-button" onclick="clearFollowAlong()">Clear Selected Sounds</button>
+        <button class="small-button" onclick="clearFollowAlong()">Clear Follow Along Chart</button>
     </div>
     <button id="clear-chart-button" class="small-button">Clear Chart</button>
+    <button id="space-button" class="small-button" onclick="addSpace()">Add Space</button>
     <script>
         const phoneticSounds = {
             vowels: {
@@ -184,6 +185,14 @@
                 await new Promise(resolve => setTimeout(resolve, 500));
             }
             isPlaying = false;
+        }
+
+        // Add Space to Follow Along Chart
+        function addSpace() {
+            const spaceElement = document.createElement('div');
+            spaceElement.className = 'chart-button';
+            spaceElement.textContent = ' ';
+            document.getElementById('follow-along').appendChild(spaceElement);
         }
 
         // Initialize the app
