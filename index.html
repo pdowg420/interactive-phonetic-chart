@@ -45,10 +45,8 @@
     <div id="follow-along">
         <h2>Follow Along Chart</h2>
         <button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>
-        <button class="small-button" onclick="clearFollowAlong()">Clear Selected Sounds</button>
     </div>
     <button id="clear-chart-button">Clear Chart</button>
-    <button onclick="clearFollowAlong()" class="small-button">Clear Follow Along Chart</button>
     <script>
         const phoneticSounds = {
             vowels: {
@@ -118,17 +116,24 @@
             container.appendChild(button);
         }
 
-        // Handle button clicks
         function handleButtonClick(button, soundFile) {
-            playSound(soundFile);
+            // Remove highlight from all buttons first
+            const buttons = document.querySelectorAll('.chart-button');
+            buttons.forEach(btn => btn.classList.remove('highlighted'));
+
+            // Play the sound and highlight the clicked button
+            playSound(soundFile).then(() => {
+                button.classList.remove('highlighted');
+            });
             button.classList.add('highlighted');
+
             const clone = button.cloneNode(true);
             clone.dataset.soundFile = soundFile;
             clone.classList.remove('highlighted');
             document.getElementById('follow-along').appendChild(clone);
         }
 
-        // Clear Follow Along Chart
+        // Clear Follow Along Chart and Highlighted Buttons
         function clearFollowAlong() {
             const followAlongDiv = document.getElementById('follow-along');
             if (followAlongDiv) {
@@ -136,6 +141,9 @@
             } else {
                 console.error("ERROR: Follow-along div not found.");
             }
+
+            // Also clear highlighted buttons
+            clearHighlightedButtons();
         }
 
         // Clear Highlighted Buttons
@@ -190,7 +198,7 @@
                 // Adding event listener for Clear Chart button
                 const clearChartButton = document.getElementById('clear-chart-button');
                 if (clearChartButton) {
-                    clearChartButton.addEventListener('click', clearHighlightedButtons);
+                    clearChartButton.addEventListener('click', clearFollowAlong); // Updated to call clearFollowAlong
                 } else {
                     console.error('ERROR: Clear Chart button not found.');
                 }
