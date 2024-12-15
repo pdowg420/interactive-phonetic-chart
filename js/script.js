@@ -65,17 +65,23 @@ function createButton(symbol, soundFile, container) {
     button.onclick = () => handleButtonClick(button, soundFile);
     container.appendChild(button);
 }
-
 function handleButtonClick(button, soundFile) {
+    // Remove highlight from all buttons first
+    const buttons = document.querySelectorAll('.chart-button');
+    buttons.forEach(btn => btn.classList.remove('highlighted'));
+
+    // Play the sound and highlight the clicked button
     playSound(soundFile).then(() => {
         button.classList.remove('highlighted');
     });
     button.classList.add('highlighted');
+
     const clone = button.cloneNode(true);
     clone.dataset.soundFile = soundFile;
     clone.classList.remove('highlighted');
     document.getElementById('follow-along').appendChild(clone);
 }
+
 
 // Clear Follow Along Chart
 function clearFollowAlong() {
