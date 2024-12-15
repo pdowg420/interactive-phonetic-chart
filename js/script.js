@@ -73,7 +73,10 @@ function handleButtonClick(button, soundFile) {
 
     // Play the sound and highlight the clicked button
     playSound(soundFile).then(() => {
+        // Ensure the highlight is removed after playing the sound
         button.classList.remove('highlighted');
+    }).catch(error => {
+        console.error("ERROR: Sound could not be played", error);
     });
     button.classList.add('highlighted');
 
