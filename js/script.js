@@ -77,7 +77,6 @@ function handleButtonClick(button, soundFile) {
     document.getElementById('follow-along').appendChild(clone);
 }
 
-
 // Clear Follow Along Chart
 function clearFollowAlong() {
     const followAlongDiv = document.getElementById('follow-along');
