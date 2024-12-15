@@ -5,35 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Phonetic Chart</title>
     <link rel="stylesheet" href="css/styles.css">
-
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #333;
+        }
         .chart-container {
             display: flex;
             flex-wrap: wrap;
+            margin-bottom: 20px;
         }
-
         .chart-button {
             padding: 10px;
             margin: 5px;
-            border: 1px solid #000;
+            border: 1px solid #007BFF;
+            background-color: #fff;
+            color: #007BFF;
             cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
         }
-
+        .chart-button:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
         .highlighted {
             background-color: yellow;
         }
-
         .play-button {
             margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
         }
-
+        .play-button:hover {
+            background-color: #218838;
+        }
         .small-button {
             padding: 5px 10px;
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        .small-button:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
 <body>
-    <button id="start-button">Start</button>
+    <button id="start-button" class="play-button">Start</button>
     <div id="vowel-sounds">
         <h2>Vowel Sounds</h2>
         <div class="chart-container"></div>
@@ -45,8 +77,9 @@
     <div id="follow-along">
         <h2>Follow Along Chart</h2>
         <button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>
+        <button class="small-button" onclick="clearFollowAlong()">Clear Selected Sounds</button>
     </div>
-    <button id="clear-chart-button">Clear Chart</button>
+    <button id="clear-chart-button" class="small-button">Clear Chart</button>
     <script>
         const phoneticSounds = {
             vowels: {
@@ -97,12 +130,10 @@
             const welcomeLabel = document.createElement('h2');
             welcomeLabel.textContent = welcomeMessage;
             document.body.prepend(welcomeLabel);
-
             const utterance = new SpeechSynthesisUtterance(welcomeMessage);
             utterance.pitch = 1.2;
             utterance.rate = 1;
             speechSynthesis.speak(utterance);
-
             const startButton = document.getElementById('start-button');
             if (startButton) startButton.style.display = 'none';
         }
@@ -116,24 +147,17 @@
             container.appendChild(button);
         }
 
+        // Handle button clicks
         function handleButtonClick(button, soundFile) {
-            // Remove highlight from all buttons first
-            const buttons = document.querySelectorAll('.chart-button');
-            buttons.forEach(btn => btn.classList.remove('highlighted'));
-
-            // Play the sound and highlight the clicked button
-            playSound(soundFile).then(() => {
-                button.classList.remove('highlighted');
-            });
+            playSound(soundFile);
             button.classList.add('highlighted');
-
             const clone = button.cloneNode(true);
             clone.dataset.soundFile = soundFile;
             clone.classList.remove('highlighted');
             document.getElementById('follow-along').appendChild(clone);
         }
 
-        // Clear Follow Along Chart and Highlighted Buttons
+        // Clear Follow Along Chart
         function clearFollowAlong() {
             const followAlongDiv = document.getElementById('follow-along');
             if (followAlongDiv) {
@@ -141,9 +165,6 @@
             } else {
                 console.error("ERROR: Follow-along div not found.");
             }
-
-            // Also clear highlighted buttons
-            clearHighlightedButtons();
         }
 
         // Clear Highlighted Buttons
@@ -156,14 +177,12 @@
         async function playSelectedSounds() {
             if (isPlaying) return;
             isPlaying = true;
-
             const buttons = document.querySelectorAll('#follow-along .chart-button');
             for (const button of buttons) {
                 const soundFile = button.dataset.soundFile;
                 await playSound(soundFile);
                 await new Promise(resolve => setTimeout(resolve, 500));
             }
-
             isPlaying = false;
         }
 
@@ -176,7 +195,6 @@
                     getUserName();
                     const vowelSoundsDiv = document.querySelector('#vowel-sounds .chart-container');
                     const consonantSoundsDiv = document.querySelector('#consonant-sounds .chart-container');
-
                     if (vowelSoundsDiv) {
                         for (const [symbol, soundFile] of Object.entries(phoneticSounds.vowels)) {
                             console.log(`DEBUG: Creating button for symbol: /${symbol}/`);
@@ -185,7 +203,6 @@
                     } else {
                         console.error("ERROR: Vowel sounds container not found.");
                     }
-
                     if (consonantSoundsDiv) {
                         for (const [symbol, soundFile] of Object.entries(phoneticSounds.consonants)) {
                             createButton(symbol, soundFile, consonantSoundsDiv);
@@ -198,7 +215,7 @@
                 // Adding event listener for Clear Chart button
                 const clearChartButton = document.getElementById('clear-chart-button');
                 if (clearChartButton) {
-                    clearChartButton.addEventListener('click', clearFollowAlong); // Updated to call clearFollowAlong
+                    clearChartButton.addEventListener('click', clearHighlightedButtons);
                 } else {
                     console.error('ERROR: Clear Chart button not found.');
                 }
