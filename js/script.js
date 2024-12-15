@@ -66,15 +66,17 @@ function createButton(symbol, soundFile, container) {
     container.appendChild(button);
 }
 
-// Handle button clicks
 function handleButtonClick(button, soundFile) {
-    playSound(soundFile);
+    playSound(soundFile).then(() => {
+        button.classList.remove('highlighted');
+    });
     button.classList.add('highlighted');
     const clone = button.cloneNode(true);
     clone.dataset.soundFile = soundFile;
     clone.classList.remove('highlighted');
     document.getElementById('follow-along').appendChild(clone);
 }
+
 
 // Clear Follow Along Chart
 function clearFollowAlong() {
