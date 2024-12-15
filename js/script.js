@@ -65,6 +65,7 @@ function createButton(symbol, soundFile, container) {
     button.onclick = () => handleButtonClick(button, soundFile);
     container.appendChild(button);
 }
+
 function handleButtonClick(button, soundFile) {
     // Remove highlight from all buttons first
     const buttons = document.querySelectorAll('.chart-button');
@@ -82,7 +83,6 @@ function handleButtonClick(button, soundFile) {
     document.getElementById('follow-along').appendChild(clone);
 }
 
-
 // Clear Follow Along Chart
 function clearFollowAlong() {
     const followAlongDiv = document.getElementById('follow-along');
@@ -91,6 +91,12 @@ function clearFollowAlong() {
     } else {
         console.error("ERROR: Follow-along div not found.");
     }
+}
+
+// Clear Highlighted Buttons
+function clearHighlightedButtons() {
+    const buttons = document.querySelectorAll('.chart-button');
+    buttons.forEach(btn => btn.classList.remove('highlighted'));
 }
 
 // Play selected sounds with a delay
@@ -135,6 +141,14 @@ function init() {
                 console.error("ERROR: Consonant sounds container not found.");
             }
         });
+
+        // Adding event listener for Clear Chart button
+        const clearChartButton = document.getElementById('clear-chart-button');
+        if (clearChartButton) {
+            clearChartButton.addEventListener('click', clearHighlightedButtons);
+        } else {
+            console.error('ERROR: Clear Chart button not found.');
+        }
     } else {
         console.error('ERROR: Start button not found.');
     }
