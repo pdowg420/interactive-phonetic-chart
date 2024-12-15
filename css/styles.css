@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
-    background-image: url('images/background.png'); /* Corrected path */
+    background-image: url('css/images/background.png'); /* Corrected path */
     background-size: cover;
     background-position: center;
 }
