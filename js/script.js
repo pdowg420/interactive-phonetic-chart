@@ -145,7 +145,9 @@ function init() {
         // Adding event listener for Clear Chart button
         const clearChartButton = document.getElementById('clear-chart-button');
         if (clearChartButton) {
-            clearChartButton.addEventListener('click', clearHighlightedButtons);
+            clearChartButton.addEventListener('click', () => {
+                clearHighlightedButtons(); // Clear highlighted buttons
+            });
         } else {
             console.error('ERROR: Clear Chart button not found.');
         }
