@@ -85,16 +85,13 @@ function handleButtonClick(button, soundFile) {
 
 // Clear Follow Along Chart
 function clearFollowAlong() {
-    const followAlongDiv = document.getElementById('follow-along');
-    if (followAlongDiv) {
-        const buttons = followAlongDiv.querySelectorAll('.chart-button');
-        buttons.forEach(btn => btn.remove());
+    const dynamicContentDiv = document.getElementById('dynamic-content');
+    if (dynamicContentDiv) {
+        dynamicContentDiv.innerHTML = '';
     } else {
-        console.error("ERROR: Follow-along div not found.");
+        console.error("ERROR: Dynamic content div not found.");
     }
 }
-
-
 // Clear Highlighted Buttons
 function clearHighlightedButtons() {
     const buttons = document.querySelectorAll('.chart-button');
