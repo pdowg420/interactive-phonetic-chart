@@ -87,11 +87,13 @@ function handleButtonClick(button, soundFile) {
 function clearFollowAlong() {
     const followAlongDiv = document.getElementById('follow-along');
     if (followAlongDiv) {
-        followAlongDiv.innerHTML = '<h2>Follow Along Chart</h2><button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>';
+        const buttons = followAlongDiv.querySelectorAll('.chart-button');
+        buttons.forEach(btn => btn.remove());
     } else {
         console.error("ERROR: Follow-along div not found.");
     }
 }
+
 
 // Clear Highlighted Buttons
 function clearHighlightedButtons() {
