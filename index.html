@@ -77,9 +77,10 @@
     <div id="follow-along">
         <h2>Follow Along Chart</h2>
         <button class="play-button small-button" onclick="playSelectedSounds()">Play Selected Sounds</button>
-        <button class="small-button" onclick="clearFollowAlong()">Clear Follow Along Chart</button>
+        <div id="dynamic-content"></div>
     </div>
-    <button id="clear-chart-button" class="small-button">Clear Chart</button>
+    <button id="clear-chart-button" onclick="clearFollowAlong()">Clear the Follow Along Chart</button>    
+    <button id="space-button" class="small-button" onclick="addSpace()">Add Space</button>
     <script>
         const phoneticSounds = {
             vowels: {
@@ -165,7 +166,6 @@
             } else {
                 console.error("ERROR: Follow-along div not found.");
             }
-            clearHighlightedButtons(); // Ensure highlighted buttons are also cleared
         }
 
         // Clear Highlighted Buttons
@@ -185,6 +185,14 @@
                 await new Promise(resolve => setTimeout(resolve, 500));
             }
             isPlaying = false;
+        }
+
+        // Add Space to Follow Along Chart
+        function addSpace() {
+            const spaceElement = document.createElement('div');
+            spaceElement.className = 'chart-button';
+            spaceElement.textContent = ' ';
+            document.getElementById('follow-along').appendChild(spaceElement);
         }
 
         // Initialize the app
@@ -216,7 +224,7 @@
                 // Adding event listener for Clear Chart button
                 const clearChartButton = document.getElementById('clear-chart-button');
                 if (clearChartButton) {
-                    clearChartButton.addEventListener('click', clearFollowAlong);
+                    clearChartButton.addEventListener('click', clearHighlightedButtons);
                 } else {
                     console.error('ERROR: Clear Chart button not found.');
                 }
