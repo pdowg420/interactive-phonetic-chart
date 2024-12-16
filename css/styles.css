@@ -1,52 +1,66 @@
-body {
-    background-image: url('../images/background.png');
-    background-size: cover; /* Ensures the image covers the entire background */
-    background-repeat: no-repeat;
-    background-position: center;
+/* Parent container to split the page into two halves */
+#main-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Left side (Vowel and Consonant charts) */
+#charts-container {
+    flex: 1; /* Takes half the width */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Right side (Follow Along Chart) */
+#follow-along {
+    flex: 1; /* Takes half the width */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-sizing: border-box;
+    height: fit-content;
+}
+
+.chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between buttons */
+}
+
+.chart-button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: 1px solid #007BFF;
+    background-color: #fff;
+    color: #007BFF;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.chart-button:hover {
+    background-color: #007BFF;
+    color: #fff;
 }
 
 h2 {
-    margin-top: 20px;
-}
-
-/* Basic styling for the chart buttons and highlights */
-.chart-button {
-    display: inline-block;
-    margin: 5px; /* Match script margin */
-    padding: 15px; /* Match script padding */
-    background-color: lightgray;
-    border: 1px solid #ddd;
-    cursor: pointer;
-}
-
-/* Add your highlighting style here */
-.chart-button.highlighted {
-    background-color: yellow; /* or any color you prefer */
-}
-
-#follow-along {
-    margin-top: 20px; /* Match script margin */
-    padding: 10px; /* Match script padding */
-    background-color: #f9f9f9; /* Fixed typo */
-    border: 1px solid #ddd;
+    margin-top: 0;
 }
 
 .play-button {
-    font-size: 20px; /* Match script font size */
-    padding: 10px; /* Match script padding */
-    background-color: #4CAF50;
-    color: white;
+    margin: 10px 0;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
     border: none;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .play-button:hover {
-    background-color: #45a049;
-}
-
-/* Small button styling */
-.small-button {
-    font-size: 16px; /* Adjust as needed */
-    padding: 5px 10px; /* Adjust as needed */
-    border-radius: 4px; /* Adjust as needed */
+    background-color: #218838;
 }
